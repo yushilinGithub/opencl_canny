@@ -1,7 +1,7 @@
 # opencl_canny
 usage :
-    mkdir build
-    cd build
-    cmake ..
-    make 
-    ./imgpro
+    mkdir build\n
+    cd build\n
+    cmake ..\n
+    make \n
+    ./imgpro\n
