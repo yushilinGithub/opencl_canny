@@ -41,8 +41,8 @@ class imageProcessor{
         void getImageBuf();
         cl::Kernel loadKernel(std::string filename,std::string kernelname,size_t lsizeX=32,size_t lsizeY=32);
         void GuassianBlur();
-        void sobal(int h_threshold,int l_threshold);
-        void hyteresisfunc(int h_threshold,int l_threshold);
+        void sobal(float h_threshold,float l_threshold);
+        void hyteresisfunc(float h_threshold,float l_threshold);
         void output();
         void finishJob();
 };

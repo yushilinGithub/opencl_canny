@@ -29,7 +29,7 @@ imageProcessor::imageProcessor(){
     queue = cl::CommandQueue(context,device_[0]);
 
     guassian = loadKernel("./kernel/guassian.cl","guassian");   
-    sobalkernel = loadKernel("./kernel/sobal.cl","sobal");
+    sobalkernel = loadKernel("./kernel/sobal.cl","stage1_with_sobel");
     hysteresis = loadKernel("./kernel/hysteresis.cl","stage2_hysteresis",32,32/8);
 }
 cl::Kernel imageProcessor::loadKernel(std::string filename,std::string kernelname,size_t lsizeX,size_t lsizeY){
@@ -61,7 +61,7 @@ void imageProcessor::getImage(cv::Mat colorimg){
     if(img.elemSize()!=1){
         cv::cvtColor(colorimg,img,cv::COLOR_BGR2GRAY);
     }else if(img.channels()==1){
-        img = colorimg;
+        colorimg.copyTo(img);
     }
     outImg  = cv::Mat(img.rows,img.cols,CV_8UC1);
     theta = cv::Mat(img.rows,img.cols,CV_8UC1);
@@ -120,10 +120,13 @@ void imageProcessor::GuassianBlur(){
         }
 }
 
-void imageProcessor::sobal(int h_threshold,int l_threshold){
+void imageProcessor::sobal(float h_threshold,float l_threshold){
+    
     cl_int error;
     size_t lsizeX=32;
     size_t lsizeY = maxGroupSize[0]/32;
+
+
 
     if(lsizeY==0){
         lsizeX = 16;
@@ -131,6 +134,11 @@ void imageProcessor::sobal(int h_threshold,int l_threshold){
     }
     if(lsizeY==0){
         lsizeY = 1;
+    }
+
+    if(h_threshold>0 && l_threshold>0){
+        h_threshold = h_threshold*h_threshold;
+        l_threshold = l_threshold*l_threshold;
     }
         
     error = sobalkernel.setArg(0,OutputImage);
@@ -161,7 +169,7 @@ void imageProcessor::sobal(int h_threshold,int l_threshold){
     }
 }
 
-void imageProcessor::hyteresisfunc(int h_threshold,int l_threshold){
+void imageProcessor::hyteresisfunc(float h_threshold,float l_threshold){
         size_t lsizeX=32;
         size_t lsizeY = maxGroupSize[0]/32;
 
@@ -190,8 +198,6 @@ void imageProcessor::hyteresisfunc(int h_threshold,int l_threshold){
         error = hysteresis.setArg(1,img.rows);
         error = hysteresis.setArg(2,img.cols);
         
-
-
         error = queue.enqueueNDRangeKernel(hysteresis,cl::NDRange(0,0),\
                                             cl::NDRange(global_sizeY,global_sizeX),\
                                             cl::NDRange(lsizeY,lsizeX));
