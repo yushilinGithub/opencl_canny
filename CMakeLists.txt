@@ -11,7 +11,7 @@ find_package(OpenCV REQUIRED)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-add_executable(imgpro guassian.cpp)
+add_executable(imgpro main.cpp)
 
 
 target_include_directories(imgpro PUBLIC ${OpenCV_INCLUDE_DIRS} ${OpenCL_INCLUDE_DIRS})

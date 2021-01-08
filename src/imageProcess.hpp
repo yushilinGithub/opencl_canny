@@ -22,8 +22,6 @@ class imageProcessor{
         cl::Buffer thetaBuf;
 
         
-
-        
         cl::Kernel guassian;
         cl::Kernel sobalkernel;
         cl::Kernel hysteresis;

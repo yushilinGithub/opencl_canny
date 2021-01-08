@@ -83,13 +83,13 @@ __kernel void stage1_with_sobel(__global uchar const *src,  __global uchar *map,
     lidx++;
     lidy++;
 
-    if (i < GRP_SIZEX + 2) //first row
+    if (i < GRP_SIZEX + 2) //first two columns
     {
         int grp_sizey = min(GRP_SIZEY + 1, rows - start_y);
         mag[i] = (sobel(i, smem)).z;   //first row
         mag[i + grp_sizey * (GRP_SIZEX + 2)] = (sobel(i + grp_sizey * (GRP_SIZEX + 4), smem)).z; //last row
     }
-    if (i < GRP_SIZEY + 2) 
+    if (i < GRP_SIZEY + 2) //first tow rows
     {
         int grp_sizex = min(GRP_SIZEX + 1, cols - start_x);
         mag[i * (GRP_SIZEX + 2)] = (sobel(i * (GRP_SIZEX + 4), smem)).z; //first column

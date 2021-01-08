@@ -1,7 +1,16 @@
 # opencl_canny
-usage :
-    mkdir build\n
-    cd build\n
-    cmake ..\n
-    make \n
-    ./imgpro\n
+
+this is the canny implementation, implemented using opencl.
+## requirement
+### opencv
+    using opencv to read image and show image, 
+### opencl
+    using it to parallel the programming.
+
+- opencl 
+## usage
+- mkdir build
+- build 
+- cmake ..
+- make
+- ./imgpro
