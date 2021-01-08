@@ -10,7 +10,7 @@ this is the canny implementation, implemented using opencl.
 - opencl 
 ## usage
 - mkdir build
-- build 
+- cd build 
 - cmake ..
 - make
 - ./imgpro
